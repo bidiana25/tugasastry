@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SiaModel;
 use App\Sia;
+use Redirect, Response;
 use DB;
+use Carbon\Carbon;
 
 
 
@@ -27,9 +29,21 @@ class SiaController extends Controller
     }
     public function grafik()
     {
-        $data = DB::table("sia")->get();
+        $record = Sia::select(\DB::raw("COUNT(*) as count"), \DB::raw("DAYNAME(created_at) as day_name"), \DB::raw("DAY(created_at) as day"))
+            ->where('created_at', '>', Carbon::today()->subDay(6))
+            ->groupBy('day_name', 'day')
+            ->orderBy('day')
+            ->get();
 
-        return view('v_grafik', compact('data'));
+        $data = [];
+
+        foreach ($record as $row) {
+            $data['label'][] = $row->day_name;
+            $data['data'][] = (int) $row->count;
+        }
+
+        $data['chart_data'] = json_encode($data);
+        return view('v_grafik', $data);
     }
     public function add()
     {
