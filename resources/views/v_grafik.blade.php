@@ -13,25 +13,14 @@
             text: "GRAFIK"
         },
         axisY: {
-            title: "Jumlah Mhs"
+            title: "Jumlah Mahasiswa"
         },
         data: [{        
             type: "column",  
             showInLegend: true, 
             legendMarkerColor: "grey",
             legendText: "Nama Matkul",
-            dataPoints: [      
-                { y: 300878, label: "Venezuela" },
-                { y: 266455,  label: "Saudi" },
-                { y: 169709,  label: "Canada" },
-                { y: 158400,  label: "Iran" },
-                { y: 142503,  label: "Iraq" },
-                { y: 101500, label: "Kuwait" },
-                { y: 97800,  label: "UAE" },
-                { y: 97800,  label: "UAE" },
-                { y: 97800,  label: "UAE" },
-                { y: 80000,  label: "Russia" }
-            ]
+            dataPoints: <?php echo json_encode($data, JSON_NUMERIC_CHECK); ?>
         }]
     });
     chart.render();
